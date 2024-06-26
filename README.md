@@ -16,6 +16,8 @@
 ```
 import torchvision.transforms as T
 import torchvision
+import torch
+from torch.utils.data import DataLoader
 
 download_root = './MNIST_DATASET'
 
