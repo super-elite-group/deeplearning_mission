@@ -12,5 +12,5 @@ dist/
 logs/
 MNIST_DATASET/
 tb_logs/
-output/
+outputs/
 cnn_mnist

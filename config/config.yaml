@@ -4,3 +4,4 @@ defaults:
   - scheduler: step_lr
   - trainer: trainer_config
   - data: data_config
+  - callbacks: early_stop

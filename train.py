@@ -10,7 +10,7 @@ import torch
 @hydra.main(config_path="config", config_name="config", version_base=None)
 def main(cfg: DictConfig):
     random_seed(42)
-
+    print(cfg)
     # Load model configuration
     model = CNN(
         input_dim=cfg.model.input_dim,
@@ -20,7 +20,7 @@ def main(cfg: DictConfig):
         optimizer_cfg=cfg.optimizer,
         scheduler_cfg=cfg.scheduler
     )
-
+    early_stop_callback = hydra.utils.instantiate(cfg.callbacks)
     datamodule = MyDataModule(cfg.data)
 
     # Set up TensorBoard logger
@@ -30,6 +30,7 @@ def main(cfg: DictConfig):
         logger=logger,
         accelerator=cfg.trainer.accelerator,
         devices=cfg.trainer.devices,
+        callbacks=[early_stop_callback],
         max_epochs=cfg.trainer.max_epochs
     )
 
