@@ -1,0 +1,3 @@
+batch_size: 32
+download_root: "./MNIST_DATASET"
+num_workers: 15
