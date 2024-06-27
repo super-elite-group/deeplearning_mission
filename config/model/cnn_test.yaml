@@ -1,0 +1,4 @@
+_target_: models.cnn_test.CNNTest
+input_channels: 1
+num_classes: 10
+dropout_ratio: 0.5
