@@ -44,14 +44,14 @@ def main(config):
     optimizer = config.init_obj('optimizer', torch.optim, trainable_params)
     lr_scheduler = config.init_obj('lr_scheduler', torch.optim.lr_scheduler, optimizer)
 
-    trainer = Trainer(model, criterion, metrics, optimizer, # trainer.py에 정의해놓음.
+    trainer = Trainer(model, criterion, metrics, optimizer, # trainer.py에 정의해놓음. # class Trainer(BaseTrainer): -> BaseTrainer를 상속받아 _train_epoch메소드, train메소드 등 구현.
                       config=config,
                       device=device,
                       data_loader=data_loader,
                       valid_data_loader=valid_data_loader,
                       lr_scheduler=lr_scheduler)
 
-    trainer.train() # trainer.py > base(안에 base_trainer.py) > 
+    trainer.train() # train()함수는 trainer.py > base(안에 base_trainer.py) > 
 
 
 if __name__ == '__main__':

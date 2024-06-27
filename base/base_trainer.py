@@ -58,7 +58,7 @@ class BaseTrainer:
         """
         Full training logic
         """
-        not_improved_count = 0
+        not_improved_count = 0 #모델 성능이 개선되지 않은 에포크 수 #patience 도달하면 early_stop 하려고.
         for epoch in range(self.start_epoch, self.epochs + 1):
             result = self._train_epoch(epoch)
 
