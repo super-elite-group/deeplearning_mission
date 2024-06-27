@@ -1,6 +1,6 @@
 _target_: pytorch_lightning.callbacks.EarlyStopping
 monitor: val_acc
 min_delta: 0.00
-patience: 30
+patience: 5
 verbose: True
 mode: max

@@ -14,8 +14,8 @@ def get_transforms():
     # ])
 
     return A.Compose([
-        A.Rotate(limit=10, p=0.05),  # Rotate images within a range of ±10 degrees
-        A.ShiftScaleRotate(shift_limit=0.1, scale_limit=0.1, rotate_limit=10, p=0.05),  # Small translations and rotations
+        A.Rotate(limit=5, p=0.05),  # Rotate images within a range of ±10 degrees
+        A.ShiftScaleRotate(shift_limit=0.05, scale_limit=0.05, rotate_limit=10, p=0.05),  # Small translations and rotations
         A.Normalize(mean=(0.1307,), std=(0.3081,)),
         ToTensorV2()  # Convert image to PyTorch tensor
     ])

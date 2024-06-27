@@ -9,6 +9,7 @@ import torch
 
 @hydra.main(config_path="config", config_name="config", version_base=None)
 def main(cfg: DictConfig):
+    torch.set_float32_matmul_precision('medium')
     random_seed(42)
     print(cfg)
     # Load model configuration
