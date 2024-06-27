@@ -1,7 +1,21 @@
+# for cnn.py
+# defaults:
+#   - model: cnn
+#   - optimizer: adam
+#   - scheduler: step_lr
+#   - trainer: trainer_config
+#   - data: data_config
+#   - callbacks: early_stop
+
+# for cnn_test.py
 defaults:
-  - model: cnn
+  - model: gru
   - optimizer: adam
   - scheduler: step_lr
   - trainer: trainer_config
   - data: data_config
   - callbacks: early_stop
+
+wandb:
+  project: "deep_learning_mission"
+  name: "gru_test"

@@ -13,6 +13,7 @@
 - [ ] 9. Semi-supervised learning을 이용해서 MNIST 분류기 만들기 - [참고자료1](https://blog.est.ai/2020/11/ssl/), [참고자료2](https://github.com/rubicco/mnist-semi-supervised)
 
 ## MNIST 데이터 셋 만드는 코드
+
 ```
 import torchvision.transforms as T
 import torchvision
@@ -26,10 +27,10 @@ mnist_transform = T.Compose([
 ])
 
 train_dataset = torchvision.datasets.MNIST(download_root, transform=mnist_transform, train=True, download=True)
-test_dataset = torchvision.datasets.MNIST(download_root, transform=mnist_transform, train=False, download=True) 
+test_dataset = torchvision.datasets.MNIST(download_root, transform=mnist_transform, train=False, download=True)
 
 total_size = len(train_dataset)
-train_num, valid_num = int(total_size * 0.8), int(total_size * 0.2) 
+train_num, valid_num = int(total_size * 0.8), int(total_size * 0.2)
 train_dataset,valid_dataset = torch.utils.data.random_split(train_dataset, [train_num, valid_num])
 
 batch_size = 32

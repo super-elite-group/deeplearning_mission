@@ -1,5 +1,6 @@
 _target_: pytorch_lightning.callbacks.EarlyStopping
-monitor: val_acc
+monitor: val_acc # for cnn.py
+# monitor: val_loss # for cnn_test.py
 min_delta: 0.00
 patience: 5
 verbose: True
