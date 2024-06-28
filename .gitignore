@@ -1,2 +1,5 @@
 /MNIST*
+/data
 /wandb
+.DS_Store
+lightning_logs
