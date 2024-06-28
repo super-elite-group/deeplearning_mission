@@ -38,3 +38,42 @@ train_dataloader = DataLoader(train_dataset, batch_size = batch_size, shuffle = 
 valid_dataloader = DataLoader(valid_dataset, batch_size = batch_size, shuffle = False)
 test_dataloader = DataLoader(test_dataset, batch_size = batch_size, shuffle = False)
 ```
+
+## Fassion MNIST 데이터 셋
+```
+import torch
+from torch.utils.data import DataLoader
+from torchvision import datasets
+import torchvision.transforms as T
+import matplotlib.pyplot as plt
+
+training_dataset = datasets.FashionMNIST(
+    root="data",
+    train=True,
+    download=True,
+    transform=T.ToTensor(),
+)
+
+test_dataset = datasets.FashionMNIST(
+    root="data",
+    train=False,
+    download=True,
+    transform=T.ToTensor(),
+)
+
+total_size = len(training_dataset)
+train_size, valid_size = int(total_size * 0.8), int(total_size * 0.2)
+
+train_dataset, valid_dataset = torch.utils.data.random_split(training_dataset, [train_size, valid_size])
+
+train_dataloadeer = DataLoader(train_dataset, batch_size = 64, shuffle = True)
+valid_dataloader = DataLoader(valid_dataset, batch_size = 64, shuffle = False)
+test_dataloader = DataLoader(test_data, batch_size = 64, shuffle = False)
+
+print(f"Number of training samples: {len(train_dataset)}")
+print(f"Number of validation samples: {len(valid_dataset)}")
+print(f"Number of test samples: {len(test_data)}")
+```
+
+
+
