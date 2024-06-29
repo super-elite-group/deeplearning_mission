@@ -1,7 +1,21 @@
+# for cnn.py
+# defaults:
+#   - model: cnn
+#   - optimizer: adam
+#   - scheduler: step_lr
+#   - trainer: trainer_config
+#   - data: data_config
+#   - callbacks: early_stop
+
+# for cnn_test.py
 defaults:
   - model: cnn
   - optimizer: adam
   - scheduler: step_lr
   - trainer: trainer_config
-  - data: data_config
+  - data: data_config_fashion_mnist
   - callbacks: early_stop
+data_module: fashion_mnist
+wandb:
+  project: "deep_learning_mission"
+  name: "cnn_random_without_augmentation"

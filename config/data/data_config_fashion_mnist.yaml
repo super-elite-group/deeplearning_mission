@@ -1,0 +1,5 @@
+_target_: data.FashionMNISTDataModule
+batch_size: 32
+download_root: "./FashionMNIST_DATASET"
+num_workers: 15
+randomize: true
