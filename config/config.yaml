@@ -9,7 +9,7 @@
 
 # for cnn_test.py
 defaults:
-  - model: cnn
+  - model: gru
   - optimizer: adam
   - scheduler: step_lr
   - trainer: trainer_config
