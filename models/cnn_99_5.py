@@ -12,38 +12,32 @@ class CNN(pl.LightningModule):
         self.scheduler_cfg = scheduler_cfg
 
         self.layer = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=16, kernel_size=5), # (N, 1, 28, 28) -> (N, 16, 24, 24)
-            nn.BatchNorm2d(16),
+            nn.Conv2d(in_channels=1, out_channels=16, kernel_size=5),
             nn.ReLU(),
-            nn.Conv2d(in_channels=16, out_channels=32, kernel_size=5), # (N, 16, 24, 24) -> (N, 32, 20, 20)
-            nn.BatchNorm2d(32),
+            nn.Conv2d(in_channels=16, out_channels=32, kernel_size=5),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=2),
             nn.Dropout(dropout_ratio),
-            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=5), # (N, 32, 10, 10) -> (N, 64, 6, 6)
-            nn.BatchNorm2d(64),
+            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=5),
             nn.ReLU(),
-            nn.MaxPool2d(kernel_size=2), # (N, 64, 6, 6) -> (N, 64, 3, 3)
+            nn.MaxPool2d(kernel_size=2),
             nn.Dropout(dropout_ratio),
-            nn.Conv2d(in_channels=64, out_channels=num_classes, kernel_size=3), # (N, 64, 3, 3) -> (N, num_classes, 1, 1)
-            nn.AdaptiveAvgPool2d((1, 1))  # Global Average Pooling
         )
 
-        # # self.fc_layer = nn.Linear(64 * 3 * 3, num_classes)
-        # self.softmax = nn.LogSoftmax(dim=1)
+        self.fc_layer = nn.Linear(64 * 3 * 3, num_classes)
+        self.softmax = nn.LogSoftmax(dim=1)
 
     def forward(self, x):
         out = self.layer(x)
         out = out.view(x.size(0), -1)
-        # pred = self.fc_layer(out)
-        # pred = self.softmax(pred)
-        return out
+        pred = self.fc_layer(out)
+        pred = self.softmax(pred)
+        return pred
 
     def training_step(self, batch, batch_idx):
         images, labels = batch
         outputs = self(images)
-        # loss = F.nll_loss(outputs, labels)
-        loss = F.cross_entropy(outputs, labels)
+        loss = F.nll_loss(outputs, labels)
         self.log('train_loss', loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
 
         # Log additional metrics
@@ -55,8 +49,7 @@ class CNN(pl.LightningModule):
     def validation_step(self, batch, batch_idx):
         images, labels = batch
         outputs = self(images)
-        # loss = F.nll_loss(outputs, labels)
-        loss = F.cross_entropy(outputs, labels)
+        loss = F.nll_loss(outputs, labels)
         self.log('val_loss', loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
 
         # Log additional metrics
@@ -68,8 +61,7 @@ class CNN(pl.LightningModule):
     def test_step(self, batch, batch_idx):
         images, labels = batch
         outputs = self(images)
-        # loss = F.nll_loss(outputs, labels)
-        loss = F.cross_entropy(outputs, labels)
+        loss = F.nll_loss(outputs, labels)
         self.log('test_loss', loss, on_step=True, on_epoch=True, prog_bar=True, logger=True)
 
         # Log additional metrics

@@ -3,7 +3,7 @@ from omegaconf import DictConfig
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger, WandbLogger
 from models import CNN, CNNTest, GRUModel
-from data import MyDataModule
+from data import MyDataModule, FashionMNISTDataModule
 from utils import random_seed
 import torch
 import wandb
@@ -46,7 +46,16 @@ def main(cfg: DictConfig):
             scheduler_cfg=cfg.scheduler
         )
     early_stop_callback = hydra.utils.instantiate(cfg.callbacks)
-    datamodule = MyDataModule(cfg.data)
+    if cfg.data_module == 'fashion_mnist':
+        datamodule = FashionMNISTDataModule(
+            batch_size=cfg.data.batch_size,
+            download_root=cfg.data.download_root,
+            num_workers=cfg.data.num_workers,
+            randomize=cfg.data.randomize
+        )
+    else:
+        datamodule = MyDataModule(cfg.data)
+
 
 
     trainer = pl.Trainer(
