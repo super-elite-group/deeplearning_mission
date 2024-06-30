@@ -77,7 +77,12 @@ class ConfigParser:
         modification = {opt.target : getattr(args, _get_opt_name(opt.flags)) for opt in options}
         return cls(config, resume, modification)
 
-    def init_obj(self, name, module, *args, **kwargs):
+    # 설정 파일의 내용을 기반으로 특정 모듈의 클래스를 동적으로 생성.
+    def init_obj(self, name, module, *args, **kwargs): # kwargs: keyword arguments의 약자. 함수에 전달되는 키워드 인수들을 사전(dictionary) 형태로 받기 위한 파이썬의 문법
+        # name: 설정 파일에서 객체의 이름을 찾기 위한 키.
+        # module: 객체를 생성할 모듈.
+        # *args: 위치 인수로 전달될 추가 인수.
+        # **kwargs: 키워드 인수로 전달될 추가 인수.
         """
         Finds a function handle with the name given as 'type' in config, and returns the
         instance initialized with corresponding arguments given.
@@ -86,11 +91,13 @@ class ConfigParser:
         is equivalent to
         `object = module.name(a, b=1)`
         """
-        module_name = self[name]['type']
-        module_args = dict(self[name]['args'])
-        assert all([k not in module_args for k in kwargs]), 'Overwriting kwargs given in config file is not allowed'
-        module_args.update(kwargs)
-        return getattr(module, module_name)(*args, **module_args)
+        module_name = self[name]['type'] # 설정 파일에서 'type' 키에 해당하는 값을 가져와 객체의 클래스를 지정
+        module_args = dict(self[name]['args']) # 설정 파일에서 'args' 키에 해당하는 값을 딕셔너리로 가져와 객체 초기화에 필요한 인수를 설정
+        assert all([k not in module_args for k in kwargs]), 'Overwriting kwargs given in config file is not allowed' # 인수 중복 확인 및 병합
+        module_args.update(kwargs) # kwargs의 인수를 module_args에 병합
+        return getattr(module, module_name)(*args, **module_args) # 객체 생성 및 반환. getattr 함수는 파이썬의 내장 함수로, 객체에서 속성(attribute)이나 메서드를 동적으로 가져오는 데 사용됨.
+        # getattr(module, module_name): module에서 module_name에 해당하는 클래스를 가져옴
+        # (*args, **module_args): 해당 클래스를 args와 module_args로 초기화
 
     def init_ftn(self, name, module, *args, **kwargs):
         """

@@ -21,7 +21,7 @@ np.random.seed(SEED)
 def main(config):
     logger = config.get_logger('train')
 
-    # setup data_loader instances
+    # data_loader 인스턴스 생성
     data_loader = config.init_obj('data_loader', module_data)
     valid_data_loader = data_loader.split_validation()
 
@@ -33,10 +33,10 @@ def main(config):
     device, device_ids = prepare_device(config['n_gpu'])
     model = model.to(device)
     if len(device_ids) > 1:
-        model = torch.nn.DataParallel(model, device_ids=device_ids)
+        model = torch.nn.DataParallel(model, device_ids=device_ids) #GPU에서 학습할 수 있도록 모델을 준비
 
-    # get function handles of loss and metrics
-    criterion = getattr(module_loss, config['loss'])
+    # 설정 파일에 정의된 손실 함수와 메트릭을 가져옴
+    criterion = getattr(module_loss, config['loss']) # model폴더 > loss.py에 있는
     metrics = [getattr(module_metric, met) for met in config['metrics']]
 
     # build optimizer, learning rate scheduler. delete every lines containing lr_scheduler for disabling scheduler
@@ -44,18 +44,19 @@ def main(config):
     optimizer = config.init_obj('optimizer', torch.optim, trainable_params)
     lr_scheduler = config.init_obj('lr_scheduler', torch.optim.lr_scheduler, optimizer)
 
-    trainer = Trainer(model, criterion, metrics, optimizer, # trainer.py에 정의해놓음. # class Trainer(BaseTrainer): -> BaseTrainer를 상속받아 _train_epoch메소드, train메소드 등 구현.
+    trainer = Trainer(model, criterion, metrics, optimizer, # trainer.py에 정의해놓음.
                       config=config,
                       device=device,
                       data_loader=data_loader,
                       valid_data_loader=valid_data_loader,
                       lr_scheduler=lr_scheduler)
 
-    trainer.train() # train()함수는 trainer.py > base(안에 base_trainer.py) > 
+    trainer.train() # trainer.py > base(안에 base_trainer.py) > 
 
 
 if __name__ == '__main__':
-    args = argparse.ArgumentParser(description='PyTorch Template')
+    args = argparse.ArgumentParser(description='PyTorch Template') # CLI 인수를 통해 설정을 변경하는 객체 생성.(설정파일을 직접 수정하지 않고도 매개변수를 변경할 수 있음)
+    # 필요한 커맨드라인 인수를 추가
     args.add_argument('-c', '--config', default=None, type=str,
                       help='config file path (default: None)')
     args.add_argument('-r', '--resume', default=None, type=str,
@@ -64,6 +65,7 @@ if __name__ == '__main__':
                       help='indices of GPUs to enable (default: all)')
 
     # custom cli options to modify configuration from default values given in json file.
+    # 명령줄에서 직접 설정 매개변수를 수정할 수 있도록 함(learning_rate, batch_size)
     CustomArgs = collections.namedtuple('CustomArgs', 'flags type target')
     options = [
         CustomArgs(['--lr', '--learning_rate'], type=float, target='optimizer;args;lr'),

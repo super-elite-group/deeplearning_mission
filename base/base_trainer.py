@@ -45,8 +45,8 @@ class BaseTrainer:
         if config.resume is not None:
             self._resume_checkpoint(config.resume)
 
-    @abstractmethod
-    def _train_epoch(self, epoch):
+    @abstractmethod # 인터페이스 라고 보면 됨(상속받는 하위 클래스 필요)
+    def _train_epoch(self, epoch): # 구현체는 trainer.py에 있음
         """
         Training logic for an epoch
 
@@ -58,7 +58,7 @@ class BaseTrainer:
         """
         Full training logic
         """
-        not_improved_count = 0 #모델 성능이 개선되지 않은 에포크 수 #patience 도달하면 early_stop 하려고.
+        not_improved_count = 0
         for epoch in range(self.start_epoch, self.epochs + 1):
             result = self._train_epoch(epoch)
 
